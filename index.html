@@ -239,7 +239,7 @@ body {
   <div class="rb-grid" id="grid"></div>
 </div>
 
-<input type="file" id="capFile" accept="image/*" style="display:none">
+<input type="file" id="capFile" accept="image/*" multiple style="display:none">
 <div class="ov" id="overlay" style="display:none"></div>
 
 <script>
@@ -686,16 +686,19 @@ body {
     }
     $("capFile").click();
   }
-  function handleFile(file) {
-    showCaptureLoading();
-    resizeImage(file, 1568, 0.85).then(function (img) {
+  function captureOne(file) {
+    return resizeImage(file, 1568, 0.85).then(function (img) {
       var c = getCfg();
       var headers = { "Content-Type": "application/json" };
       if (c.tok) headers["X-App-Token"] = c.tok;
       return fetch(c.url, { method: "POST", headers: headers, body: JSON.stringify({ image: img.data, mediaType: img.mediaType }) });
     }).then(function (r) {
       return r.json().catch(function () { return { ok: false, error: "bad response" }; }).then(function (j) { return { status: r.status, body: j }; });
-    }).then(function (res) {
+    });
+  }
+  function handleFile(file) {
+    showCaptureLoading(1, 1);
+    captureOne(file).then(function (res) {
       if (res.status === 401) { alertModal("口令不对", "Worker 口令不匹配，到设置里检查访问口令。/ The app token didn't match — check it in settings."); return; }
       if (!res.body || !res.body.ok) {
         var e = (res.body && res.body.error) || "unknown";
@@ -707,8 +710,43 @@ body {
       alertModal("出错了", "连不上抓取服务。检查一下网络，以及设置里的 Worker 地址。/ Couldn't reach the capture service. Check your connection and the Worker URL in settings.");
     });
   }
-  function showCaptureLoading() {
-    openModal('<div class="cap-load"><div class="spinner"></div><h3>正在识别菜谱…</h3><p>Reading the recipe from your screenshot…</p></div>', true);
+  function handleFiles(files) {
+    var total = files.length, done = 0, ok = 0, failed = [];
+    showCaptureLoading(1, total);
+    function next(i) {
+      if (i >= total) { showBatchResult(ok, failed); return; }
+      showCaptureLoading(i + 1, total);
+      captureOne(files[i]).then(function (res) {
+        if (res.status === 401) { failed.push({ name: files[i].name, reason: "口令不对 / token rejected" }); }
+        else if (!res.body || !res.body.ok) { failed.push({ name: files[i].name, reason: (res.body && res.body.error) || "unknown" }); }
+        else {
+          var r = normalizeImported(res.body.recipe);
+          var nw = cloneRecipe(r); nw.id = uid(); nw.createdAt = Date.now();
+          recipes = [nw].concat(recipes);
+          save(); ok++;
+        }
+      }).catch(function () {
+        failed.push({ name: files[i].name, reason: "连不上 / connection error" });
+      }).then(function () { next(i + 1); });
+    }
+    next(0);
+  }
+  function showBatchResult(ok, failed) {
+    renderGrid();
+    var html = '<div class="confirm"><h3>批量导入完成</h3>';
+    html += '<p>成功导入 <strong>' + ok + '</strong> 道菜谱。/ Successfully imported <strong>' + ok + '</strong> recipe' + (ok !== 1 ? 's' : '') + '.</p>';
+    if (failed.length) {
+      html += '<p style="color:var(--danger)">有 ' + failed.length + ' 张没识别出来 / ' + failed.length + ' failed:</p><ul style="font-size:13px;color:var(--ink-soft);margin:0 0 12px;padding-left:18px;line-height:1.8">';
+      for (var i = 0; i < failed.length; i++) html += '<li>' + esc(failed[i].name) + ' — ' + esc(failed[i].reason) + '</li>';
+      html += '</ul>';
+    }
+    html += '<div class="confirm-btns"><button class="btn btn-primary" id="aOk">好 OK</button></div></div>';
+    openModal(html, true);
+    $("aOk").onclick = closeModal;
+  }
+  function showCaptureLoading(current, total) {
+    var progress = total > 1 ? ' (' + current + '/' + total + ')' : '';
+    openModal('<div class="cap-load"><div class="spinner"></div><h3>正在识别菜谱…' + progress + '</h3><p>Reading recipe' + progress + ' from your screenshot…</p></div>', true);
   }
   function alertModal(title, msgHtml) {
     openModal('<div class="confirm"><h3>' + esc(title) + '</h3><p>' + msgHtml + '</p><div class="confirm-btns"><button class="btn btn-primary" id="aOk">好 OK</button></div></div>', true);
@@ -760,7 +798,12 @@ body {
   $("addBtn").onclick = function () { openForm(null); };
   $("captureBtn").onclick = startCapture;
   $("settingsBtn").onclick = openSettings;
-  $("capFile").onchange = function () { var f = this.files && this.files[0]; this.value = ""; if (f) handleFile(f); };
+  $("capFile").onchange = function () {
+    var fl = this.files; this.value = "";
+    if (!fl || !fl.length) return;
+    if (fl.length === 1) handleFile(fl[0]);
+    else { var arr = []; for (var i = 0; i < fl.length; i++) arr.push(fl[i]); handleFiles(arr); }
+  };
   var search = $("search"), clearBtn = $("clearBtn");
   search.oninput = function () {
     filters.q = search.value;
