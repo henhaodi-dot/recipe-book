@@ -132,6 +132,15 @@ body {
 .sec-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .sec-text { font-family: var(--font-body); font-size: 14.5px; line-height: 1.75; color: var(--ink); white-space: pre-wrap; margin: 0; }
 .sec-text.zh { font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', var(--font-body); }
+.ing-list, .steps-list { list-style: none; padding: 0; margin: 0; font-family: var(--font-body); font-size: 14.5px; line-height: 1.65; color: var(--ink); }
+.ing-list.zh, .steps-list.zh { font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', var(--font-body); }
+.ing-list li { padding: 5px 0 5px 20px; position: relative; border-bottom: 1px dashed var(--line); }
+.ing-list li:last-child { border-bottom: none; }
+.ing-list li::before { content: ''; position: absolute; left: 4px; top: 13px; width: 6px; height: 6px; background: var(--celadon); border-radius: 50%; }
+.steps-list { counter-reset: step; }
+.steps-list li { padding: 8px 0 8px 32px; position: relative; border-bottom: 1px solid var(--line); }
+.steps-list li:last-child { border-bottom: none; }
+.steps-list li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 7px; width: 22px; height: 22px; background: var(--celadon-deep); color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; display: grid; place-items: center; }
 .note { margin-top: 22px; background: var(--surface-2); border-left: 3px solid var(--celadon); border-radius: 0 10px 10px 0; padding: 12px 16px; }
 .note-label { font-family: var(--font-zh); font-size: 13px; color: var(--celadon-deep); font-weight: 500; }
 .note p { margin: 4px 0 0; font-size: 14px; line-height: 1.65; color: var(--ink); white-space: pre-wrap; }
@@ -426,6 +435,20 @@ body {
       (zh ? '<pre class="sec-text zh">' + esc(zh) + '</pre>' : "") +
       (en ? '<pre class="sec-text en">' + esc(en) + '</pre>' : "") + '</div></div>';
   }
+  function toListItems(text) {
+    if (!text) return "";
+    return text.split("\n").filter(function (l) { return l.trim(); }).map(function (l) {
+      return "<li>" + esc(l.trim().replace(/^\d+[\.\)]\s*/, "")) + "</li>";
+    }).join("");
+  }
+  function listSectionHTML(title, titleEn, zh, en, type) {
+    if (!zh && !en) return "";
+    var cls = type === "steps" ? "steps-list" : "ing-list";
+    var tag = "ul";
+    return '<div class="sec"><h4 class="sec-title">' + title + ' <em>' + titleEn + '</em></h4><div class="sec-cols">' +
+      (zh ? '<' + tag + ' class="' + cls + ' zh">' + toListItems(zh) + '</' + tag + '>' : "") +
+      (en ? '<' + tag + ' class="' + cls + ' en">' + toListItems(en) + '</' + tag + '>' : "") + '</div></div>';
+  }
   function detailHTML(r) {
     var c = catlabel(r.category);
     var showZh = detailLang !== "en", showEn = detailLang !== "zh";
@@ -452,8 +475,8 @@ body {
         '<h2 class="detail-zh">' + esc(r.nameZh || r.nameEn) + '</h2>' +
         (r.nameEn && r.nameZh ? '<p class="detail-en">' + esc(r.nameEn) + '</p>' : "") +
         '<div class="detail-fam">' + pills + '</div>' +
-        sectionHTML("材料", "Ingredients", showZh ? r.ingZh : "", showEn ? r.ingEn : "") +
-        sectionHTML("做法", "Steps", showZh ? r.stepsZh : "", showEn ? r.stepsEn : "") +
+        listSectionHTML("材料", "Ingredients", showZh ? r.ingZh : "", showEn ? r.ingEn : "", "ing") +
+        listSectionHTML("做法", "Steps", showZh ? r.stepsZh : "", showEn ? r.stepsEn : "", "steps") +
         (r.notes ? '<div class="note"><span class="note-label">小记 Notes</span><p>' + esc(r.notes) + '</p></div>' : "") +
       '</div></div>';
   }
