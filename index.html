@@ -799,10 +799,12 @@ body {
   $("captureBtn").onclick = startCapture;
   $("settingsBtn").onclick = openSettings;
   $("capFile").onchange = function () {
-    var fl = this.files; this.value = "";
+    var fl = this.files;
     if (!fl || !fl.length) return;
-    if (fl.length === 1) handleFile(fl[0]);
-    else { var arr = []; for (var i = 0; i < fl.length; i++) arr.push(fl[i]); handleFiles(arr); }
+    var arr = []; for (var i = 0; i < fl.length; i++) arr.push(fl[i]);
+    this.value = "";
+    if (arr.length === 1) handleFile(arr[0]);
+    else handleFiles(arr);
   };
   var search = $("search"), clearBtn = $("clearBtn");
   search.oninput = function () {
