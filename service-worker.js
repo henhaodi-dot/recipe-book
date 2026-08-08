@@ -1,6 +1,6 @@
 /* Recipe Book service worker — offline app shell.
    Bump CACHE when you change index.html so devices pick up the new version. */
-var CACHE = "recipe-book-v3";
+var CACHE = "recipe-book-v4";
 var ASSETS = [
   "./",
   "./index.html",
