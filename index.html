@@ -218,6 +218,7 @@ body {
     <div class="header-actions">
       <button class="iconbtn gear" id="settingsBtn" aria-label="设置 settings"></button>
       <button class="btn btn-capture" id="captureBtn"></button>
+      <button class="btn btn-capture" id="linkBtn"></button>
       <button class="btn btn-primary" id="addBtn"></button>
     </div>
   </header>
@@ -273,6 +274,7 @@ body {
     leaf: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16z" stroke-linejoin="round"/><path d="M8 16c3-3 6-5 9-6" stroke-linecap="round"/></svg>',
     back: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     image: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-9 9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    link: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     gear: '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19" stroke-linecap="round"/></svg>'
   };
 
@@ -749,6 +751,49 @@ body {
     var progress = total > 1 ? ' (' + current + '/' + total + ')' : '';
     openModal('<div class="cap-load"><div class="spinner"></div><h3>正在识别菜谱…' + progress + '</h3><p>Reading recipe' + progress + ' from your screenshot…</p></div>', true);
   }
+
+  // ---- link import ----
+  function startLinkImport() {
+    if (!getCfg().url) {
+      openSettings();
+      var m = $("sTestMsg"); if (m) { m.className = "set-test bad"; m.textContent = "先填 Worker 地址再导入 / add your Worker URL first"; }
+      return;
+    }
+    openModal('<div class="form"><div class="form-head"><h3>链接导入 <em>Import from link</em></h3><button class="iconbtn" id="liClose" aria-label="关闭 close">' + ICON.close + '</button></div>' +
+      '<div class="set-body">' +
+        '<label class="field"><span class="field-label">菜谱链接 <em>Recipe URL</em></span><input class="inp" id="li_url" placeholder="粘贴菜谱链接 / Paste recipe URL" autocomplete="off"></label>' +
+      '</div>' +
+      '<div class="form-foot"><button class="btn btn-ghost" id="liCancel">取消 Cancel</button><button class="btn btn-primary" id="liGo">导入 Import</button></div></div>', true);
+    $("liClose").onclick = closeModal;
+    $("liCancel").onclick = closeModal;
+    $("liGo").onclick = function () {
+      var url = ($("li_url").value || "").trim();
+      if (!url) return;
+      if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+      submitLinkImport(url);
+    };
+    $("li_url").addEventListener("keydown", function (e) { if (e.key === "Enter") $("liGo").click(); });
+    setTimeout(function () { $("li_url").focus(); }, 80);
+  }
+  function submitLinkImport(url) {
+    openModal('<div class="cap-load"><div class="spinner"></div><h3>正在读取链接…</h3><p>Fetching and reading the recipe page…</p></div>', true);
+    var c = getCfg();
+    var headers = { "Content-Type": "application/json" };
+    if (c.tok) headers["X-App-Token"] = c.tok;
+    fetch(c.url, { method: "POST", headers: headers, body: JSON.stringify({ url: url }) }).then(function (r) {
+      return r.json().catch(function () { return { ok: false, error: "bad response" }; }).then(function (j) { return { status: r.status, body: j }; });
+    }).then(function (res) {
+      if (res.status === 401) { alertModal("口令不对", "Worker 口令不匹配，到设置里检查访问口令。/ The app token didn't match — check it in settings."); return; }
+      if (!res.body || !res.body.ok) {
+        var e = (res.body && res.body.error) || "unknown";
+        alertModal("没能识别", esc(e) + "<br><br>试试截图导入？/ Try importing a screenshot instead.");
+        return;
+      }
+      openForm(normalizeImported(res.body.recipe), true);
+    }).catch(function () {
+      alertModal("出错了", "连不上抓取服务。检查一下网络，以及设置里的 Worker 地址。/ Couldn't reach the capture service. Check your connection and the Worker URL in settings.");
+    });
+  }
   function alertModal(title, msgHtml) {
     openModal('<div class="confirm"><h3>' + esc(title) + '</h3><p>' + msgHtml + '</p><div class="confirm-btns"><button class="btn btn-primary" id="aOk">好 OK</button></div></div>', true);
     $("aOk").onclick = closeModal;
@@ -794,11 +839,13 @@ body {
   // ---- init ----
   $("addBtn").innerHTML = ICON.plus + " 加菜 Add";
   $("captureBtn").innerHTML = ICON.image + " 截图导入 Import";
+  $("linkBtn").innerHTML = ICON.link + " 链接导入 Link";
   $("settingsBtn").innerHTML = ICON.gear;
   $("searchIcon").innerHTML = ICON.search;
   $("clearBtn").innerHTML = ICON.close;
   $("addBtn").onclick = function () { openForm(null); };
   $("captureBtn").onclick = startCapture;
+  $("linkBtn").onclick = startLinkImport;
   $("settingsBtn").onclick = openSettings;
   $("capFile").onchange = function () {
     var fl = this.files;
