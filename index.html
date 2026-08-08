@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#3E5B52">
-<title>我的菜谱 · My Recipe Book</title>
+<title>My Recipe Book</title>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="菜谱">
+<meta name="apple-mobile-web-app-title" content="Recipe Book">
 <link rel="apple-touch-icon" href="./icon-180.png">
 <link rel="icon" href="./icon-192.png">
 <style>
@@ -44,7 +44,7 @@ body {
 .rb-brand { display: flex; align-items: center; gap: 14px; }
 .rb-seal { font-family: var(--font-zh); font-weight: 600; font-size: 24px; color: var(--celadon-deep); width: 46px; height: 46px; display: grid; place-items: center; flex: none; border: 1.5px solid var(--celadon); border-radius: 12px; background: var(--surface-2); box-shadow: inset 0 0 0 2px var(--porcelain); }
 .rb-seal.big { width: 68px; height: 68px; font-size: 34px; margin-bottom: 6px; }
-.rb-title { font-family: var(--font-zh); font-weight: 600; font-size: clamp(24px, 4.5vw, 32px); margin: 0; letter-spacing: 2px; line-height: 1; }
+.rb-title { font-family: var(--font-en); font-weight: 600; font-size: clamp(24px, 4.5vw, 32px); margin: 0; letter-spacing: 1px; line-height: 1; }
 .rb-sub { margin: 4px 0 0; font-size: 12.5px; color: var(--ink-soft); letter-spacing: .2px; }
 .rb-count { font-family: var(--font-en); font-weight: 600; color: var(--celadon-deep); }
 
@@ -69,17 +69,12 @@ body {
 .rb-clear:hover { color: var(--ink); }
 
 .rb-chiprow { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { font-family: var(--font-body); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; display: inline-flex; align-items: baseline; gap: 6px; color: var(--ink); transition: all .15s; }
-.chip .zh { font-family: var(--font-zh); font-size: 14px; font-weight: 500; }
-.chip .en { font-size: 11px; color: var(--ink-soft); letter-spacing: .3px; }
+.chip { font-family: var(--font-body); font-size: 13.5px; font-weight: 500; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; display: inline-flex; align-items: baseline; gap: 6px; color: var(--ink); transition: all .15s; }
 .chip:hover { border-color: var(--celadon); }
-.chip-on { background: var(--celadon-deep); border-color: var(--celadon-deep); }
-.chip-on .zh { color: #fff; }
-.chip-on .en { color: rgba(255,255,255,.7); }
+.chip-on { background: var(--celadon-deep); border-color: var(--celadon-deep); color: #fff; }
 
 .rb-famrow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.rb-famlabel { font-family: var(--font-zh); font-size: 13.5px; color: var(--ink-soft); white-space: nowrap; }
-.rb-famlabel em { font-family: var(--font-body); font-style: normal; font-size: 11px; margin-left: 3px; }
+.rb-famlabel { font-family: var(--font-body); font-size: 13.5px; color: var(--ink-soft); white-space: nowrap; }
 .rb-famchips { display: flex; flex-wrap: wrap; gap: 7px; }
 .famchip { font-family: var(--font-body); font-size: 13px; background: var(--surface); border: 1.4px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all .14s; }
 .famchip .dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -101,8 +96,8 @@ body {
 .card-dot { width: 10px; height: 10px; border-radius: 50%; }
 
 .rb-empty { text-align: center; padding: 64px 20px; color: var(--ink-soft); display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.rb-empty-zh { font-family: var(--font-zh); font-size: 20px; color: var(--ink); margin: 4px 0 0; }
-.rb-empty-en { font-size: 13.5px; margin: 0 0 8px; }
+.rb-empty-title { font-family: var(--font-en); font-size: 20px; color: var(--ink); margin: 4px 0 0; }
+.rb-empty-sub { font-size: 13.5px; margin: 0 0 8px; }
 .rb-loading { text-align: center; padding: 70px 0; color: var(--ink-soft); font-size: 14px; }
 
 .ov { position: fixed; inset: 0; background: rgba(38,42,36,.44); backdrop-filter: blur(2px); display: flex; align-items: flex-start; justify-content: center; padding: clamp(10px, 4vh, 44px) 14px; z-index: 50; overflow-y: auto; animation: ovin .18s ease; }
@@ -112,9 +107,6 @@ body {
 @keyframes sheetin { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
 
 .detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); position: sticky; top: 0; z-index: 2; }
-.detail-lang { display: flex; gap: 3px; background: var(--porcelain); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
-.lang { font-family: var(--font-body); font-size: 12.5px; border: none; background: transparent; color: var(--ink-soft); padding: 5px 11px; border-radius: 999px; cursor: pointer; }
-.lang.on { background: var(--celadon-deep); color: #fff; }
 .detail-actions { display: flex; gap: 6px; }
 .detail-body { padding: 22px clamp(18px, 4vw, 30px) 30px; }
 .detail-meta { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
@@ -127,8 +119,7 @@ body {
 .fampill { font-size: 12.5px; border: 1.4px solid; border-radius: 999px; padding: 4px 11px; display: inline-flex; align-items: center; gap: 6px; background: var(--surface); }
 .fampill .dot { width: 8px; height: 8px; border-radius: 50%; }
 .sec { margin-top: 24px; }
-.sec-title { font-family: var(--font-zh); font-size: 17px; font-weight: 600; margin: 0 0 10px; color: var(--celadon-deep); letter-spacing: 1px; border-bottom: 1px solid var(--line); padding-bottom: 7px; }
-.sec-title em { font-family: var(--font-en); font-style: italic; font-size: 13px; color: var(--ink-soft); margin-left: 6px; font-weight: 400; letter-spacing: 0; }
+.sec-title { font-family: var(--font-en); font-size: 17px; font-weight: 600; margin: 0 0 10px; color: var(--celadon-deep); letter-spacing: .5px; border-bottom: 1px solid var(--line); padding-bottom: 7px; }
 .sec-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .sec-text { font-family: var(--font-body); font-size: 14.5px; line-height: 1.75; color: var(--ink); white-space: pre-wrap; margin: 0; }
 .sec-text.zh { font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', var(--font-body); }
@@ -142,21 +133,23 @@ body {
 .steps-list li:last-child { border-bottom: none; }
 .steps-list li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 7px; width: 22px; height: 22px; background: var(--celadon-deep); color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; display: grid; place-items: center; }
 .note { margin-top: 22px; background: var(--surface-2); border-left: 3px solid var(--celadon); border-radius: 0 10px 10px 0; padding: 12px 16px; }
-.note-label { font-family: var(--font-zh); font-size: 13px; color: var(--celadon-deep); font-weight: 500; }
+.note-label { font-family: var(--font-en); font-size: 13px; color: var(--celadon-deep); font-weight: 500; }
 .note p { margin: 4px 0 0; font-size: 14px; line-height: 1.65; color: var(--ink); white-space: pre-wrap; }
 
 .confirm { padding: 24px 24px 20px; }
-.confirm h3 { font-family: var(--font-zh); font-size: 20px; margin: 0 0 8px; }
+.confirm h3 { font-family: var(--font-en); font-size: 20px; margin: 0 0 8px; }
 .confirm p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 18px; }
 .confirm-btns { display: flex; justify-content: flex-end; gap: 10px; }
 
 .form-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line); background: var(--surface-2); position: sticky; top: 0; z-index: 2; }
-.form-head h3 { font-family: var(--font-zh); font-size: 19px; margin: 0; letter-spacing: 1px; }
-.form-head em { font-family: var(--font-en); font-style: italic; font-size: 14px; color: var(--ink-soft); margin-left: 8px; font-weight: 400; }
+.form-head h3 { font-family: var(--font-en); font-size: 19px; margin: 0; letter-spacing: .5px; }
+.form-right { display: flex; align-items: center; gap: 8px; }
+.mode-toggle { display: flex; gap: 3px; background: var(--porcelain); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.mode-btn { font-family: var(--font-body); font-size: 12.5px; border: none; background: transparent; color: var(--ink-soft); padding: 5px 11px; border-radius: 999px; cursor: pointer; }
+.mode-btn.on { background: var(--celadon-deep); color: #fff; }
 .form-body { padding: 20px clamp(16px, 4vw, 26px); display: flex; flex-direction: column; gap: 16px; max-height: 66vh; overflow-y: auto; }
 .field { display: flex; flex-direction: column; gap: 6px; }
-.field-label { font-family: var(--font-zh); font-size: 13.5px; color: var(--ink); font-weight: 500; }
-.field-label em { font-family: var(--font-body); font-style: normal; font-size: 11px; color: var(--ink-soft); margin-left: 5px; }
+.field-label { font-family: var(--font-body); font-size: 13.5px; color: var(--ink); font-weight: 500; }
 .inp { font-family: var(--font-body); font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); width: 100%; }
 .inp:focus { outline: none; border-color: var(--celadon); box-shadow: 0 0 0 3px rgba(110,148,138,.15); }
 .ta { resize: vertical; line-height: 1.6; min-height: 60px; }
@@ -191,14 +184,12 @@ body {
 .import-menu.open { display: block; animation: ovin .12s ease; }
 .import-opt { display: flex; align-items: center; gap: 9px; width: 100%; background: none; border: none; font-family: var(--font-body); font-size: 14px; color: var(--ink); padding: 10px 13px; border-radius: 8px; cursor: pointer; text-align: left; }
 .import-opt:hover { background: var(--surface-2); }
-.import-opt .opt-zh { font-family: var(--font-zh); font-weight: 500; }
-.import-opt .opt-en { font-size: 11.5px; color: var(--ink-soft); margin-left: 4px; }
 .import-banner { display: flex; align-items: center; gap: 8px; background: #EEF3E6; border: 1px solid #CFE0BE; color: #46632F; border-radius: 10px; padding: 9px 13px; font-size: 12.5px; line-height: 1.4; margin-bottom: 4px; }
 .import-banner svg { flex: none; }
 .cap-load { padding: 44px 26px; text-align: center; }
 .cap-load .spinner { width: 34px; height: 34px; margin: 0 auto 16px; border: 3px solid var(--line); border-top-color: var(--celadon-deep); border-radius: 50%; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.cap-load h3 { font-family: var(--font-zh); font-size: 18px; margin: 0 0 4px; }
+.cap-load h3 { font-family: var(--font-en); font-size: 18px; margin: 0 0 4px; }
 .cap-load p { font-size: 13px; color: var(--ink-soft); margin: 0; }
 .set-body { padding: 20px clamp(16px,4vw,24px); display: flex; flex-direction: column; gap: 16px; }
 .set-hint { font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; margin: 0; }
@@ -218,17 +209,17 @@ body {
     <div class="rb-brand">
       <span class="rb-seal" aria-hidden="true">食</span>
       <div>
-        <h1 class="rb-title">我的菜谱</h1>
-        <p class="rb-sub">My Recipe Book · <span class="rb-count" id="count">0</span> 道菜 · 自动保存 auto‑saves</p>
+        <h1 class="rb-title">My Recipe Book</h1>
+        <p class="rb-sub"><span class="rb-count" id="count">0</span> recipes · auto-saves</p>
       </div>
     </div>
     <div class="header-actions">
-      <button class="iconbtn gear" id="settingsBtn" aria-label="设置 settings"></button>
+      <button class="iconbtn gear" id="settingsBtn" aria-label="Settings"></button>
       <div class="import-wrap">
         <button class="btn btn-capture" id="importBtn"></button>
         <div class="import-menu" id="importMenu">
-          <button class="import-opt" id="captureBtn"><span id="captureIcon"></span><span><span class="opt-zh">截图导入</span><span class="opt-en">Screenshot</span></span></button>
-          <button class="import-opt" id="linkBtn"><span id="linkIcon"></span><span><span class="opt-zh">链接导入</span><span class="opt-en">From link</span></span></button>
+          <button class="import-opt" id="captureBtn"><span id="captureIcon"></span><span>Screenshot</span></button>
+          <button class="import-opt" id="linkBtn"><span id="linkIcon"></span><span>From link</span></button>
         </div>
       </div>
       <button class="btn btn-primary" id="addBtn"></button>
@@ -238,12 +229,12 @@ body {
   <div class="rb-bar">
     <div class="rb-searchwrap">
       <span class="rb-searchicon" id="searchIcon"></span>
-      <input class="rb-search" id="search" placeholder="搜索菜名、材料…  Search recipes" autocomplete="off">
-      <button class="rb-clear" id="clearBtn" aria-label="清空 clear" style="display:none"></button>
+      <input class="rb-search" id="search" placeholder="Search recipes, ingredients..." autocomplete="off">
+      <button class="rb-clear" id="clearBtn" aria-label="Clear" style="display:none"></button>
     </div>
     <div class="rb-chiprow" id="catRow"></div>
     <div class="rb-famrow">
-      <span class="rb-famlabel">谁爱吃 <em>Who likes it</em></span>
+      <span class="rb-famlabel">Who likes it</span>
       <div class="rb-famchips" id="famChips"></div>
     </div>
   </div>
@@ -262,11 +253,12 @@ body {
   var STORAGE_KEY = "recipes-v1";
 
   var CATEGORIES = [
-    { id: "breakfast", zh: "早餐", en: "Breakfast" },
-    { id: "lunch", zh: "午餐", en: "Lunch" },
-    { id: "dinner", zh: "晚餐", en: "Dinner" },
-    { id: "snack", zh: "点心", en: "Snack" },
-    { id: "drinks", zh: "饮品", en: "Drinks" }
+    { id: "breakfast", label: "Breakfast" },
+    { id: "lunch", label: "Lunch" },
+    { id: "dinner", label: "Dinner" },
+    { id: "snack", label: "Snack" },
+    { id: "sauce", label: "Sauces" },
+    { id: "drinks", label: "Drinks" }
   ];
   var FAMILY = [
     { id: "rachel", label: "Rachel", color: "#5E8C7E" },
@@ -274,7 +266,7 @@ body {
     { id: "mia", label: "Mia", color: "#B06F87" },
     { id: "zoey", label: "Zoey", color: "#A07BA8" }
   ];
-  function catlabel(id) { for (var i=0;i<CATEGORIES.length;i++) if (CATEGORIES[i].id===id) return CATEGORIES[i]; return {zh:"",en:""}; }
+  function catlabel(id) { for (var i=0;i<CATEGORIES.length;i++) if (CATEGORIES[i].id===id) return CATEGORIES[i].label; return ""; }
   function fam(id) { for (var i=0;i<FAMILY.length;i++) if (FAMILY[i].id===id) return FAMILY[i]; return null; }
 
   var ICON = {
@@ -291,19 +283,19 @@ body {
   };
 
   var SAMPLES = [
-    { id:"s1", nameZh:"番茄炒蛋", nameEn:"Tomato & Egg", category:"dinner", family:["rachel","joey","mia","zoey"], lowFodmap:false, servings:"2", time:"15 分钟 / min",
+    { id:"s1", nameZh:"番茄炒蛋", nameEn:"Tomato & Egg", category:"dinner", family:["rachel","joey","mia","zoey"], lowFodmap:false, servings:"2", time:"15 min",
       ingZh:"鸡蛋 4 个\n番茄 2 个\n糖 1 小勺\n盐 适量\n葱花 少许",
       ingEn:"4 eggs\n2 tomatoes\n1 tsp sugar\nsalt to taste\nchopped scallion",
       stepsZh:"1. 鸡蛋打散，加一点盐。\n2. 番茄切小块。\n3. 热油炒蛋，凝固后盛出。\n4. 下番茄炒出汁，加糖和盐。\n5. 倒回鸡蛋翻炒，撒葱花。",
       stepsEn:"1. Beat eggs with a pinch of salt.\n2. Chop tomatoes.\n3. Scramble eggs in hot oil, set aside.\n4. Cook tomatoes until juicy, add sugar and salt.\n5. Return eggs, toss, top with scallion.",
-      notes:"娃都爱吃的家常菜。/ The one everyone eats.", createdAt:1 },
-    { id:"s2", nameZh:"小米南瓜粥", nameEn:"Millet & Pumpkin Congee", category:"breakfast", family:["rachel","joey","mia","zoey"], lowFodmap:true, servings:"3", time:"40 分钟 / min",
+      notes:"The one everyone eats.", createdAt:1 },
+    { id:"s2", nameZh:"小米南瓜粥", nameEn:"Millet & Pumpkin Congee", category:"breakfast", family:["rachel","joey","mia","zoey"], lowFodmap:true, servings:"3", time:"40 min",
       ingZh:"小米 半杯\n南瓜 200 克\n水 适量",
       ingEn:"1/2 cup millet\n200g pumpkin\nwater",
       stepsZh:"1. 小米洗净。\n2. 南瓜切小块。\n3. 加水大火煮开，转小火。\n4. 煮到软糯粘稠即可。",
       stepsEn:"1. Rinse the millet.\n2. Cube the pumpkin.\n3. Bring to a boil, then reduce to a simmer.\n4. Cook until soft and creamy.",
-      notes:"温软好消化，Zoey 也能吃。/ Gentle enough for Zoey.", createdAt:2 },
-    { id:"s3", nameZh:"蜂蜜柠檬水", nameEn:"Honey Lemon Water", category:"drinks", family:["rachel","mia"], lowFodmap:false, servings:"1", time:"5 分钟 / min",
+      notes:"Gentle enough for Zoey.", createdAt:2 },
+    { id:"s3", nameZh:"蜂蜜柠檬水", nameEn:"Honey Lemon Water", category:"drinks", family:["rachel","mia"], lowFodmap:false, servings:"1", time:"5 min",
       ingZh:"柠檬 半个\n蜂蜜 1 勺\n温水 一杯",
       ingEn:"1/2 lemon\n1 tbsp honey\n1 cup warm water",
       stepsZh:"1. 挤柠檬汁。\n2. 加蜂蜜。\n3. 倒温水搅匀。",
@@ -314,9 +306,9 @@ body {
   // ---- state ----
   var recipes = [];
   var filters = { cat: "all", fam: [], fodmap: false, q: "" };
-  var detailLang = "both";
   var formState = null;
   var formImported = false;
+  var formMode = "detailed";
 
   // ---- persistence ----
   function load() {
@@ -328,7 +320,7 @@ body {
   }
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes)); showError(""); }
-    catch (e) { showError("这台设备的存储空间不足，最新改动可能没保存。/ Storage is full — your latest change may not be saved."); }
+    catch (e) { showError("Storage is full — your latest change may not be saved."); }
   }
 
   function uid() {
@@ -366,9 +358,9 @@ body {
 
   // ---- toolbar ----
   function buildCatRow() {
-    var cats = [{ id: "all", zh: "全部", en: "All" }].concat(CATEGORIES);
+    var cats = [{ id: "all", label: "All" }].concat(CATEGORIES);
     $("catRow").innerHTML = cats.map(function (c) {
-      return '<button class="chip' + (filters.cat === c.id ? " chip-on" : "") + '" data-cat="' + c.id + '"><span class="zh">' + c.zh + '</span><span class="en">' + c.en + '</span></button>';
+      return '<button class="chip' + (filters.cat === c.id ? " chip-on" : "") + '" data-cat="' + c.id + '">' + c.label + '</button>';
     }).join("");
     Array.prototype.forEach.call($("catRow").querySelectorAll("[data-cat]"), function (b) {
       b.onclick = function () { filters.cat = b.getAttribute("data-cat"); buildCatRow(); renderGrid(); };
@@ -383,7 +375,7 @@ body {
       var dot = "background:" + (on ? "#fff" : f.color);
       return '<button class="famchip' + (on ? " on" : "") + '" data-fam="' + f.id + '" style="' + style + '"><span class="dot" style="' + dot + '"></span>' + esc(f.label) + '</button>';
     }).join("");
-    html += '<button class="famchip fodmap' + (filters.fodmap ? " on" : "") + '" id="fodmapBtn" title="低 FODMAP（适合 Joey）">' + ICON.leaf + '低 FODMAP</button>';
+    html += '<button class="famchip fodmap' + (filters.fodmap ? " on" : "") + '" id="fodmapBtn" title="Low FODMAP (for Joey)">' + ICON.leaf + ' Low FODMAP</button>';
     wrap.innerHTML = html;
     Array.prototype.forEach.call(wrap.querySelectorAll("[data-fam]"), function (b) {
       b.onclick = function () {
@@ -403,7 +395,7 @@ body {
       return m ? '<span class="card-dot" style="background:' + m.color + '" title="' + esc(m.label) + '"></span>' : "";
     }).join("");
     return '<button class="card" data-id="' + esc(r.id) + '">' +
-      '<div class="card-top"><span class="card-cat">' + c.zh + " · " + c.en + '</span>' +
+      '<div class="card-top"><span class="card-cat">' + c + '</span>' +
       (r.lowFodmap ? '<span class="card-leaf">' + ICON.leaf + '</span>' : "") + '</div>' +
       '<h3 class="card-zh">' + esc(r.nameZh || r.nameEn) + '</h3>' +
       (r.nameEn && r.nameZh ? '<p class="card-en">' + esc(r.nameEn) + '</p>' : "") +
@@ -415,10 +407,10 @@ body {
     var anyFilter = filters.cat !== "all" || filters.fam.length || filters.fodmap || filters.q.trim();
     if (list.length === 0) {
       if (anyFilter) {
-        grid.innerHTML = '<div class="rb-empty"><p class="rb-empty-zh">没有符合的菜</p><p class="rb-empty-en">Nothing matches these filters yet.</p><button class="btn btn-ghost" id="resetBtn">清除筛选 Clear filters</button></div>';
+        grid.innerHTML = '<div class="rb-empty"><p class="rb-empty-title">No matches</p><p class="rb-empty-sub">Nothing matches these filters yet.</p><button class="btn btn-ghost" id="resetBtn">Clear filters</button></div>';
         $("resetBtn").onclick = function () { filters = { cat: "all", fam: [], fodmap: false, q: "" }; $("search").value = ""; $("clearBtn").style.display = "none"; buildCatRow(); buildFamRow(); renderGrid(); };
       } else {
-        grid.innerHTML = '<div class="rb-empty"><span class="rb-seal big" aria-hidden="true">食</span><p class="rb-empty-zh">还没有菜谱</p><p class="rb-empty-en">Add the first recipe to start your book.</p><button class="btn btn-primary" id="firstBtn">' + ICON.plus + ' 加第一道菜 Add a recipe</button></div>';
+        grid.innerHTML = '<div class="rb-empty"><span class="rb-seal big" aria-hidden="true">食</span><p class="rb-empty-title">No recipes yet</p><p class="rb-empty-sub">Add the first recipe to start your book.</p><button class="btn btn-primary" id="firstBtn">' + ICON.plus + ' Add a recipe</button></div>';
         $("firstBtn").onclick = function () { openForm(null); };
       }
       return;
@@ -443,12 +435,6 @@ body {
   function escClose(e) { if (e.key === "Escape") closeModal(); }
 
   // ---- detail ----
-  function sectionHTML(title, titleEn, zh, en) {
-    if (!zh && !en) return "";
-    return '<div class="sec"><h4 class="sec-title">' + title + ' <em>' + titleEn + '</em></h4><div class="sec-cols">' +
-      (zh ? '<pre class="sec-text zh">' + esc(zh) + '</pre>' : "") +
-      (en ? '<pre class="sec-text en">' + esc(en) + '</pre>' : "") + '</div></div>';
-  }
   function toListItems(text) {
     if (!text) return "";
     var lines = Array.isArray(text) ? text : String(text).split("\n");
@@ -456,23 +442,18 @@ body {
       return "<li>" + esc(String(l).trim().replace(/^\d+[\.\)]\s*/, "")) + "</li>";
     }).join("");
   }
-  function listSectionHTML(title, titleEn, zh, en, type) {
+  function listSectionHTML(title, zh, en, type) {
     if (!zh && !en) return "";
     var cls = type === "steps" ? "steps-list" : "ing-list";
-    var tag = "ul";
-    return '<div class="sec"><h4 class="sec-title">' + title + ' <em>' + titleEn + '</em></h4><div class="sec-cols">' +
-      (zh ? '<' + tag + ' class="' + cls + ' zh">' + toListItems(zh) + '</' + tag + '>' : "") +
-      (en ? '<' + tag + ' class="' + cls + ' en">' + toListItems(en) + '</' + tag + '>' : "") + '</div></div>';
+    return '<div class="sec"><h4 class="sec-title">' + title + '</h4><div class="sec-cols">' +
+      (zh ? '<ul class="' + cls + ' zh">' + toListItems(zh) + '</ul>' : "") +
+      (en ? '<ul class="' + cls + ' en">' + toListItems(en) + '</ul>' : "") + '</div></div>';
   }
   function detailHTML(r) {
     var c = catlabel(r.category);
-    var showZh = detailLang !== "en", showEn = detailLang !== "zh";
-    var langBtns = [["both", "双语"], ["zh", "中文"], ["en", "EN"]].map(function (p) {
-      return '<button class="lang' + (detailLang === p[0] ? " on" : "") + '" data-lang="' + p[0] + '">' + p[1] + '</button>';
-    }).join("");
-    var meta = '<span class="metatag">' + c.zh + " · " + c.en + '</span>' +
-      (r.lowFodmap ? '<span class="metatag leaf">' + ICON.leaf + ' 低 FODMAP</span>' : "") +
-      (r.servings ? '<span class="metatag ghost">' + esc(r.servings) + ' 人份 / servings</span>' : "") +
+    var meta = '<span class="metatag">' + c + '</span>' +
+      (r.lowFodmap ? '<span class="metatag leaf">' + ICON.leaf + ' Low FODMAP</span>' : "") +
+      (r.servings ? '<span class="metatag ghost">' + esc(r.servings) + ' servings</span>' : "") +
       (r.time ? '<span class="metatag ghost">' + esc(r.time) + '</span>' : "");
     var pills = (r.family || []).map(function (fid) {
       var m = fam(fid); if (!m) return "";
@@ -480,32 +461,27 @@ body {
     }).join("");
     return '<div class="detail">' +
       '<div class="detail-head">' +
-        '<button class="iconbtn" id="dBack" aria-label="返回 back">' + ICON.back + '</button>' +
-        '<div class="detail-lang">' + langBtns + '</div>' +
-        '<div class="detail-actions"><button class="iconbtn" id="dEdit" aria-label="编辑 edit">' + ICON.edit + '</button>' +
-          '<button class="iconbtn danger" id="dDel" aria-label="删除 delete">' + ICON.trash + '</button></div>' +
+        '<button class="iconbtn" id="dBack" aria-label="Back">' + ICON.back + '</button>' +
+        '<div class="detail-actions"><button class="iconbtn" id="dEdit" aria-label="Edit">' + ICON.edit + '</button>' +
+          '<button class="iconbtn danger" id="dDel" aria-label="Delete">' + ICON.trash + '</button></div>' +
       '</div>' +
       '<div class="detail-body">' +
         '<div class="detail-meta">' + meta + '</div>' +
         '<h2 class="detail-zh">' + esc(r.nameZh || r.nameEn) + '</h2>' +
         (r.nameEn && r.nameZh ? '<p class="detail-en">' + esc(r.nameEn) + '</p>' : "") +
         '<div class="detail-fam">' + pills + '</div>' +
-        listSectionHTML("材料", "Ingredients", showZh ? r.ingZh : "", showEn ? r.ingEn : "", "ing") +
-        listSectionHTML("做法", "Steps", showZh ? r.stepsZh : "", showEn ? r.stepsEn : "", "steps") +
-        (r.notes ? '<div class="note"><span class="note-label">小记 Notes</span><p>' + esc(r.notes) + '</p></div>' : "") +
+        listSectionHTML("Ingredients", r.ingZh, r.ingEn, "ing") +
+        listSectionHTML("Steps", r.stepsZh, r.stepsEn, "steps") +
+        (r.notes ? '<div class="note"><span class="note-label">Notes</span><p>' + esc(r.notes) + '</p></div>' : "") +
       '</div></div>';
   }
   function bindDetail(id) {
-    Array.prototype.forEach.call(overlay.querySelectorAll("[data-lang]"), function (b) {
-      b.onclick = function () { detailLang = b.getAttribute("data-lang"); setSheet(detailHTML(findRecipe(id))); bindDetail(id); };
-    });
     var back = $("dBack"); if (back) back.onclick = closeModal;
     var ed = $("dEdit"); if (ed) ed.onclick = function () { openForm(findRecipe(id)); };
     var del = $("dDel"); if (del) del.onclick = function () { confirmDelete(id); };
   }
   function openDetail(id) {
     var r = findRecipe(id); if (!r) return;
-    detailLang = "both";
     openModal(detailHTML(r));
     bindDetail(id);
   }
@@ -514,7 +490,7 @@ body {
   // ---- delete ----
   function confirmDelete(id) {
     var r = findRecipe(id); if (!r) return;
-    openModal('<div class="confirm"><h3>删掉这道菜？</h3><p>Delete “' + esc(r.nameZh || r.nameEn) + '”? 这一步没法撤销。This can’t be undone.</p><div class="confirm-btns"><button class="btn btn-ghost" id="cCancel">取消 Cancel</button><button class="btn btn-danger" id="cDel">删掉 Delete</button></div></div>', true);
+    openModal('<div class="confirm"><h3>Delete this recipe?</h3><p>Delete "' + esc(r.nameZh || r.nameEn) + '"? This can’t be undone.</p><div class="confirm-btns"><button class="btn btn-ghost" id="cCancel">Cancel</button><button class="btn btn-danger" id="cDel">Delete</button></div></div>', true);
     $("cCancel").onclick = function () { openDetail(id); };
     $("cDel").onclick = function () {
       recipes = recipes.filter(function (x) { return x.id !== id; });
@@ -525,9 +501,28 @@ body {
   // ---- form ----
   function formHTML() {
     var s = formState;
+    var isSimple = formMode === "simple";
+    var toggle = '<div class="mode-toggle">' +
+      '<button class="mode-btn' + (isSimple ? ' on' : '') + '" data-mode="simple">Simple</button>' +
+      '<button class="mode-btn' + (!isSimple ? ' on' : '') + '" data-mode="detailed">Detailed</button>' +
+      '</div>';
+    var head = '<div class="form-head"><h3>' + (s.id ? "Edit recipe" : "New recipe") + '</h3>' +
+      '<div class="form-right">' + toggle + '<button class="iconbtn" id="fClose" aria-label="Close">' + ICON.close + '</button></div></div>';
+
+    if (isSimple) {
+      return '<div class="form">' + head +
+        '<div class="form-body">' +
+          '<label class="field"><span class="field-label">Paste your recipe</span>' +
+          '<textarea class="inp ta" id="f_simpleText" rows="14" placeholder="Paste ingredients, steps, and any other recipe details here...">' + esc(s._simpleText || '') + '</textarea></label>' +
+          '<p class="form-err" id="formErr" style="display:none"></p>' +
+        '</div>' +
+        '<div class="form-foot"><button class="btn btn-ghost" id="fCancel">Cancel</button>' +
+        '<button class="btn btn-primary" id="fParse">Parse</button></div></div>';
+    }
+
     function catPicks() {
       return CATEGORIES.map(function (c) {
-        return '<button class="pick' + (s.category === c.id ? " on" : "") + '" data-cat="' + c.id + '">' + c.zh + " " + c.en + '</button>';
+        return '<button class="pick' + (s.category === c.id ? " on" : "") + '" data-cat="' + c.id + '">' + c.label + '</button>';
       }).join("");
     }
     function famPicks() {
@@ -537,57 +532,76 @@ body {
         return '<button class="pick' + (on ? " on" : "") + '" data-fam="' + m.id + '"' + style + '>' + esc(m.label) + '</button>';
       }).join("");
     }
-    return '<div class="form">' +
-      '<div class="form-head"><h3>' + (s.id ? "改一改" : "加一道菜") + ' <em>' + (s.id ? "Edit recipe" : "New recipe") + '</em></h3><button class="iconbtn" id="fClose" aria-label="关闭 close">' + ICON.close + '</button></div>' +
+    return '<div class="form">' + head +
       '<div class="form-body">' +
-        (formImported ? '<div class="import-banner">' + ICON.image + '<span>从截图导入 · 请核对内容，别忘了选「谁爱吃」/ Imported from a screenshot — check it over and pick who likes it</span></div>' : "") +
+        (formImported ? '<div class="import-banner">' + ICON.image + '<span>Imported — review the details and pick who likes it</span></div>' : "") +
         '<div class="row2">' +
-          '<label class="field"><span class="field-label">菜名（中文）<em>Name (Chinese)</em></span><input class="inp" id="f_nameZh" value="' + esc(s.nameZh) + '" placeholder="番茄炒蛋"></label>' +
-          '<label class="field"><span class="field-label">菜名（英文）<em>Name (English)</em></span><input class="inp" id="f_nameEn" value="' + esc(s.nameEn) + '" placeholder="Tomato & Egg"></label>' +
+          '<label class="field"><span class="field-label">Name (Chinese)</span><input class="inp" id="f_nameZh" value="' + esc(s.nameZh) + '" placeholder="番茄炒蛋"></label>' +
+          '<label class="field"><span class="field-label">Name (English)</span><input class="inp" id="f_nameEn" value="' + esc(s.nameEn) + '" placeholder="Tomato & Egg"></label>' +
         '</div>' +
-        '<div class="field"><span class="field-label">分类 <em>Meal type</em></span><div class="pickrow" id="catPicks">' + catPicks() + '</div></div>' +
-        '<div class="field"><span class="field-label">谁爱吃 <em>Who likes it</em></span><div class="pickrow" id="famPicks">' + famPicks() + '</div></div>' +
+        '<div class="field"><span class="field-label">Category</span><div class="pickrow" id="catPicks">' + catPicks() + '</div></div>' +
+        '<div class="field"><span class="field-label">Who likes it</span><div class="pickrow" id="famPicks">' + famPicks() + '</div></div>' +
         '<div class="row2">' +
-          '<label class="check"><input type="checkbox" id="f_fodmap"' + (s.lowFodmap ? " checked" : "") + '><span>' + ICON.leaf + ' 低 FODMAP <em>(适合 Joey)</em></span></label>' +
+          '<label class="check"><input type="checkbox" id="f_fodmap"' + (s.lowFodmap ? " checked" : "") + '><span>' + ICON.leaf + ' Low FODMAP <em>(for Joey)</em></span></label>' +
           '<div class="row2 tight">' +
-            '<label class="field"><span class="field-label">份量 <em>Servings</em></span><input class="inp" id="f_servings" value="' + esc(s.servings) + '" placeholder="2"></label>' +
-            '<label class="field"><span class="field-label">时间 <em>Time</em></span><input class="inp" id="f_time" value="' + esc(s.time) + '" placeholder="15 min"></label>' +
+            '<label class="field"><span class="field-label">Servings</span><input class="inp" id="f_servings" value="' + esc(s.servings) + '" placeholder="2"></label>' +
+            '<label class="field"><span class="field-label">Time</span><input class="inp" id="f_time" value="' + esc(s.time) + '" placeholder="15 min"></label>' +
           '</div>' +
         '</div>' +
         '<div class="row2">' +
-          '<label class="field"><span class="field-label">材料（中文）<em>Ingredients (中文)</em></span><textarea class="inp ta" id="f_ingZh" rows="5" placeholder="鸡蛋 4 个&#10;番茄 2 个">' + esc(s.ingZh) + '</textarea></label>' +
-          '<label class="field"><span class="field-label">材料（英文）<em>Ingredients (EN)</em></span><textarea class="inp ta" id="f_ingEn" rows="5" placeholder="4 eggs&#10;2 tomatoes">' + esc(s.ingEn) + '</textarea></label>' +
+          '<label class="field"><span class="field-label">Ingredients (Chinese)</span><textarea class="inp ta" id="f_ingZh" rows="5" placeholder="鸡蛋 4 个&#10;番茄 2 个">' + esc(s.ingZh) + '</textarea></label>' +
+          '<label class="field"><span class="field-label">Ingredients (English)</span><textarea class="inp ta" id="f_ingEn" rows="5" placeholder="4 eggs&#10;2 tomatoes">' + esc(s.ingEn) + '</textarea></label>' +
         '</div>' +
         '<div class="row2">' +
-          '<label class="field"><span class="field-label">做法（中文）<em>Steps (中文)</em></span><textarea class="inp ta" id="f_stepsZh" rows="6" placeholder="1. 鸡蛋打散…">' + esc(s.stepsZh) + '</textarea></label>' +
-          '<label class="field"><span class="field-label">做法（英文）<em>Steps (EN)</em></span><textarea class="inp ta" id="f_stepsEn" rows="6" placeholder="1. Beat the eggs…">' + esc(s.stepsEn) + '</textarea></label>' +
+          '<label class="field"><span class="field-label">Steps (Chinese)</span><textarea class="inp ta" id="f_stepsZh" rows="6" placeholder="1. 鸡蛋打散…">' + esc(s.stepsZh) + '</textarea></label>' +
+          '<label class="field"><span class="field-label">Steps (English)</span><textarea class="inp ta" id="f_stepsEn" rows="6" placeholder="1. Beat the eggs…">' + esc(s.stepsEn) + '</textarea></label>' +
         '</div>' +
-        '<label class="field"><span class="field-label">小记 <em>Notes (optional)</em></span><textarea class="inp ta" id="f_notes" rows="2" placeholder="娃都爱吃 / a family favourite">' + esc(s.notes) + '</textarea></label>' +
+        '<label class="field"><span class="field-label">Notes (optional)</span><textarea class="inp ta" id="f_notes" rows="2" placeholder="A family favourite">' + esc(s.notes) + '</textarea></label>' +
         '<p class="form-err" id="formErr" style="display:none"></p>' +
       '</div>' +
-      '<div class="form-foot"><button class="btn btn-ghost" id="fCancel">取消 Cancel</button><button class="btn btn-primary" id="fSave">保存 Save</button></div>' +
+      '<div class="form-foot"><button class="btn btn-ghost" id="fCancel">Cancel</button><button class="btn btn-primary" id="fSave">Save</button></div>' +
     '</div>';
   }
   function openForm(r, imported) {
     formImported = !!imported;
+    formMode = "detailed";
     formState = r ? cloneRecipe(r)
-      : { nameZh:"", nameEn:"", category:"dinner", family:[], lowFodmap:false, servings:"", time:"", ingZh:"", ingEn:"", stepsZh:"", stepsEn:"", notes:"" };
+      : { nameZh:"", nameEn:"", category:"dinner", family:[], lowFodmap:false, servings:"", time:"", ingZh:"", ingEn:"", stepsZh:"", stepsEn:"", notes:"", _simpleText:"" };
     openModal(formHTML());
     bindForm();
   }
   function cloneRecipe(r) {
     return { id:r.id, nameZh:r.nameZh||"", nameEn:r.nameEn||"", category:r.category||"dinner",
       family:(r.family||[]).slice(), lowFodmap:!!r.lowFodmap, servings:r.servings||"", time:r.time||"",
-      ingZh:r.ingZh||"", ingEn:r.ingEn||"", stepsZh:r.stepsZh||"", stepsEn:r.stepsEn||"", notes:r.notes||"", createdAt:r.createdAt };
+      ingZh:r.ingZh||"", ingEn:r.ingEn||"", stepsZh:r.stepsZh||"", stepsEn:r.stepsEn||"", notes:r.notes||"", createdAt:r.createdAt, _simpleText:"" };
   }
   function bindForm() {
+    Array.prototype.forEach.call(overlay.querySelectorAll("[data-mode]"), function (b) {
+      b.onclick = function () {
+        var newMode = b.getAttribute("data-mode");
+        if (newMode === formMode) return;
+        var st = $("f_simpleText"); if (st) formState._simpleText = st.value;
+        readFormFields();
+        formMode = newMode;
+        setSheet(formHTML());
+        bindForm();
+      };
+    });
+    $("fClose").onclick = closeFromForm;
+    $("fCancel").onclick = closeFromForm;
+
+    if (formMode === "simple") {
+      var parseBtn = $("fParse");
+      if (parseBtn) parseBtn.onclick = parseSimpleText;
+      return;
+    }
+
     var map = { f_nameZh:"nameZh", f_nameEn:"nameEn", f_servings:"servings", f_time:"time", f_ingZh:"ingZh", f_ingEn:"ingEn", f_stepsZh:"stepsZh", f_stepsEn:"stepsEn", f_notes:"notes" };
     Object.keys(map).forEach(function (id) {
       var el = $(id); if (!el) return;
       el.oninput = function () { formState[map[id]] = el.value; };
     });
     $("f_fodmap").onchange = function () { formState.lowFodmap = this.checked; };
-    // category (single select)
     Array.prototype.forEach.call($("catPicks").querySelectorAll("[data-cat]"), function (b) {
       b.onclick = function () {
         formState.category = b.getAttribute("data-cat");
@@ -595,7 +609,6 @@ body {
         b.classList.add("on");
       };
     });
-    // family (multi)
     Array.prototype.forEach.call($("famPicks").querySelectorAll("[data-fam]"), function (b) {
       b.onclick = function () {
         var id = b.getAttribute("data-fam"), i = formState.family.indexOf(id), m = fam(id);
@@ -608,9 +621,15 @@ body {
         }
       };
     });
-    $("fClose").onclick = closeFromForm;
-    $("fCancel").onclick = closeFromForm;
     $("fSave").onclick = saveForm;
+  }
+  function readFormFields() {
+    if (formMode !== "detailed") return;
+    var map = { f_nameZh:"nameZh", f_nameEn:"nameEn", f_servings:"servings", f_time:"time", f_ingZh:"ingZh", f_ingEn:"ingEn", f_stepsZh:"stepsZh", f_stepsEn:"stepsEn", f_notes:"notes" };
+    Object.keys(map).forEach(function (id) {
+      var el = $(id); if (el) formState[map[id]] = el.value;
+    });
+    var fod = $("f_fodmap"); if (fod) formState.lowFodmap = fod.checked;
   }
   function closeFromForm() {
     if (formState && formState.id && findRecipe(formState.id)) openDetail(formState.id);
@@ -619,7 +638,7 @@ body {
   function saveForm() {
     var s = formState;
     if (!(s.nameZh || "").trim() && !(s.nameEn || "").trim()) {
-      var e = $("formErr"); e.textContent = "给菜起个名字吧（中文或英文都行）。/ Add a name — Chinese or English."; e.style.display = "block";
+      var e = $("formErr"); e.textContent = "Please add a name — Chinese or English."; e.style.display = "block";
       return;
     }
     var id;
@@ -632,6 +651,45 @@ body {
       recipes = [nw].concat(recipes);
     }
     save(); renderGrid(); openDetail(id);
+  }
+  function parseSimpleText() {
+    var text = ($("f_simpleText").value || "").trim();
+    if (!text) {
+      var e = $("formErr"); e.textContent = "Paste some recipe text first."; e.style.display = "block";
+      return;
+    }
+    formState._simpleText = text;
+    var c = getCfg();
+    if (!c.url) {
+      var e = $("formErr"); e.textContent = "Set up your Worker URL in settings first."; e.style.display = "block";
+      return;
+    }
+    openModal('<div class="cap-load"><div class="spinner"></div><h3>Parsing recipe…</h3><p>Structuring your recipe text…</p></div>', true);
+    var headers = { "Content-Type": "application/json" };
+    if (c.tok) headers["X-App-Token"] = c.tok;
+    fetch(c.url, { method: "POST", headers: headers, body: JSON.stringify({ text: text }) }).then(function (r) {
+      return r.json().catch(function () { return { ok: false, error: "bad response" }; }).then(function (j) { return { status: r.status, body: j }; });
+    }).then(function (res) {
+      if (res.status === 401) { alertModal("Error", "The app token didn't match — check it in settings."); return; }
+      if (!res.body || !res.body.ok) {
+        var err = (res.body && res.body.error) || "unknown";
+        alertModal("Error", "Couldn't parse the recipe: " + esc(err));
+        return;
+      }
+      var parsed = normalizeImported(res.body.recipe);
+      formState.nameZh = parsed.nameZh; formState.nameEn = parsed.nameEn;
+      formState.category = parsed.category; formState.lowFodmap = parsed.lowFodmap;
+      formState.servings = parsed.servings; formState.time = parsed.time;
+      formState.ingZh = parsed.ingZh; formState.ingEn = parsed.ingEn;
+      formState.stepsZh = parsed.stepsZh; formState.stepsEn = parsed.stepsEn;
+      formState.notes = parsed.notes;
+      formMode = "detailed";
+      formImported = true;
+      openModal(formHTML());
+      bindForm();
+    }).catch(function () {
+      alertModal("Error", "Couldn't reach the capture service. Check your connection and the Worker URL in settings.");
+    });
   }
 
   // ---- misc ui ----
@@ -659,14 +717,14 @@ body {
   function openSettings() {
     var c = getCfg();
     var html = '<div class="form">' +
-      '<div class="form-head"><h3>抓取设置 <em>Capture settings</em></h3><button class="iconbtn" id="sClose" aria-label="关闭 close">' + ICON.close + '</button></div>' +
+      '<div class="form-head"><h3>Capture settings</h3><button class="iconbtn" id="sClose" aria-label="Close">' + ICON.close + '</button></div>' +
       '<div class="set-body">' +
-        '<p class="set-hint">把部署好的 Worker 地址填在这里，「截图导入」就能用了。地址只保存在这台设备上。<br>Paste your deployed Worker URL here to switch on screenshot import. It is kept only on this device.</p>' +
-        '<label class="field"><span class="field-label">Worker 地址 <em>Worker URL</em></span><input class="inp" id="s_url" value="' + esc(c.url) + '" placeholder="https://recipe-capture.xxx.workers.dev" autocomplete="off"></label>' +
-        '<label class="field"><span class="field-label">访问口令（可选）<em>App token (optional)</em></span><input class="inp" id="s_tok" value="' + esc(c.tok) + '" placeholder="没设置就留空 / leave blank if you did not set one" autocomplete="off"></label>' +
-        '<div><button class="btn btn-ghost" id="sTest">测试连接 Test connection</button><p class="set-test" id="sTestMsg"></p></div>' +
+        '<p class="set-hint">Paste your deployed Worker URL here to enable screenshot and link import. The URL is stored only on this device.</p>' +
+        '<label class="field"><span class="field-label">Worker URL</span><input class="inp" id="s_url" value="' + esc(c.url) + '" placeholder="https://recipe-capture.xxx.workers.dev" autocomplete="off"></label>' +
+        '<label class="field"><span class="field-label">App token (optional)</span><input class="inp" id="s_tok" value="' + esc(c.tok) + '" placeholder="Leave blank if you didn’t set one" autocomplete="off"></label>' +
+        '<div><button class="btn btn-ghost" id="sTest">Test connection</button><p class="set-test" id="sTestMsg"></p></div>' +
       '</div>' +
-      '<div class="form-foot"><button class="btn btn-ghost" id="sCancel">取消 Cancel</button><button class="btn btn-primary" id="sSave">保存 Save</button></div>' +
+      '<div class="form-foot"><button class="btn btn-ghost" id="sCancel">Cancel</button><button class="btn btn-primary" id="sSave">Save</button></div>' +
     '</div>';
     openModal(html);
     $("sClose").onclick = closeModal;
@@ -679,16 +737,16 @@ body {
       var url = ($("s_url").value || "").trim().replace(/\/+$/, "");
       var tok = ($("s_tok").value || "").trim();
       var msg = $("sTestMsg");
-      msg.className = "set-test"; msg.textContent = "测试中… testing…";
-      if (!url) { msg.className = "set-test bad"; msg.textContent = "请先填地址 / enter a URL first"; return; }
+      msg.className = "set-test"; msg.textContent = "Testing…";
+      if (!url) { msg.className = "set-test bad"; msg.textContent = "Enter a URL first"; return; }
       var headers = {}; if (tok) headers["X-App-Token"] = tok;
       fetch(url, { method: "GET", headers: headers }).then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) {
-          if (r.ok && j && j.ok) { msg.className = "set-test ok"; msg.textContent = "连接成功 ✓ Connected"; }
-          else if (r.status === 401) { msg.className = "set-test bad"; msg.textContent = "口令不对 / token rejected"; }
-          else { msg.className = "set-test bad"; msg.textContent = "没连上 (" + r.status + ") / not reachable"; }
+          if (r.ok && j && j.ok) { msg.className = "set-test ok"; msg.textContent = "Connected ✓"; }
+          else if (r.status === 401) { msg.className = "set-test bad"; msg.textContent = "Token rejected"; }
+          else { msg.className = "set-test bad"; msg.textContent = "Not reachable (" + r.status + ")"; }
         });
-      }).catch(function () { msg.className = "set-test bad"; msg.textContent = "连不上，检查地址 / can't reach it — check the URL"; });
+      }).catch(function () { msg.className = "set-test bad"; msg.textContent = "Can't reach it — check the URL"; });
     };
   }
 
@@ -696,86 +754,70 @@ body {
   function startCapture() {
     if (!getCfg().url) {
       openSettings();
-      var m = $("sTestMsg"); if (m) { m.className = "set-test bad"; m.textContent = "先填 Worker 地址再导入 / add your Worker URL first"; }
+      var m = $("sTestMsg"); if (m) { m.className = "set-test bad"; m.textContent = "Add your Worker URL first"; }
       return;
     }
     $("capFile").click();
   }
-  function captureOne(file) {
-    return resizeImage(file, 1568, 0.85).then(function (img) {
+  function handleFile(file) {
+    showCaptureLoading(1);
+    resizeImage(file, 1568, 0.85).then(function (img) {
       var c = getCfg();
       var headers = { "Content-Type": "application/json" };
       if (c.tok) headers["X-App-Token"] = c.tok;
       return fetch(c.url, { method: "POST", headers: headers, body: JSON.stringify({ image: img.data, mediaType: img.mediaType }) });
     }).then(function (r) {
       return r.json().catch(function () { return { ok: false, error: "bad response" }; }).then(function (j) { return { status: r.status, body: j }; });
-    });
-  }
-  function handleFile(file) {
-    showCaptureLoading(1, 1);
-    captureOne(file).then(function (res) {
-      if (res.status === 401) { alertModal("口令不对", "Worker 口令不匹配，到设置里检查访问口令。/ The app token didn't match — check it in settings."); return; }
+    }).then(function (res) {
+      if (res.status === 401) { alertModal("Error", "The app token didn’t match — check it in settings."); return; }
       if (!res.body || !res.body.ok) {
-        var e = (res.body && res.body.error) || "unknown";
-        alertModal("没能识别", "这张图没读出菜谱（" + esc(e) + "）。换一张更清楚、能看到完整食材和做法的截图试试。/ Couldn't read a recipe from that image — try a clearer screenshot that shows the full ingredients and steps.");
+        alertModal("Error", "Couldn’t read a recipe from that image. Try a clearer screenshot that shows the full ingredients and steps.");
         return;
       }
       openForm(normalizeImported(res.body.recipe), true);
     }).catch(function () {
-      alertModal("出错了", "连不上抓取服务。检查一下网络，以及设置里的 Worker 地址。/ Couldn't reach the capture service. Check your connection and the Worker URL in settings.");
+      alertModal("Error", "Couldn’t reach the capture service. Check your connection and the Worker URL in settings.");
     });
   }
   function handleFiles(files) {
-    var total = files.length, done = 0, ok = 0, failed = [];
-    showCaptureLoading(1, total);
-    function next(i) {
-      if (i >= total) { showBatchResult(ok, failed); return; }
-      showCaptureLoading(i + 1, total);
-      captureOne(files[i]).then(function (res) {
-        if (res.status === 401) { failed.push({ name: files[i].name, reason: "口令不对 / token rejected" }); }
-        else if (!res.body || !res.body.ok) { failed.push({ name: files[i].name, reason: (res.body && res.body.error) || "unknown" }); }
-        else {
-          var r = normalizeImported(res.body.recipe);
-          var nw = cloneRecipe(r); nw.id = uid(); nw.createdAt = Date.now();
-          recipes = [nw].concat(recipes);
-          save(); ok++;
-        }
-      }).catch(function () {
-        failed.push({ name: files[i].name, reason: "连不上 / connection error" });
-      }).then(function () { next(i + 1); });
-    }
-    next(0);
+    showCaptureLoading(files.length);
+    var promises = [];
+    for (var i = 0; i < files.length; i++) promises.push(resizeImage(files[i], 1568, 0.85));
+    Promise.all(promises).then(function (images) {
+      var c = getCfg();
+      var headers = { "Content-Type": "application/json" };
+      if (c.tok) headers["X-App-Token"] = c.tok;
+      return fetch(c.url, { method: "POST", headers: headers, body: JSON.stringify({ images: images }) });
+    }).then(function (r) {
+      return r.json().catch(function () { return { ok: false, error: "bad response" }; }).then(function (j) { return { status: r.status, body: j }; });
+    }).then(function (res) {
+      if (res.status === 401) { alertModal("Error", "The app token didn’t match — check it in settings."); return; }
+      if (!res.body || !res.body.ok) {
+        alertModal("Error", "Couldn’t read a recipe from those images. Try clearer screenshots that show the full ingredients and steps.");
+        return;
+      }
+      openForm(normalizeImported(res.body.recipe), true);
+    }).catch(function () {
+      alertModal("Error", "Couldn’t reach the capture service. Check your connection and the Worker URL in settings.");
+    });
   }
-  function showBatchResult(ok, failed) {
-    renderGrid();
-    var html = '<div class="confirm"><h3>批量导入完成</h3>';
-    html += '<p>成功导入 <strong>' + ok + '</strong> 道菜谱。/ Successfully imported <strong>' + ok + '</strong> recipe' + (ok !== 1 ? 's' : '') + '.</p>';
-    if (failed.length) {
-      html += '<p style="color:var(--danger)">有 ' + failed.length + ' 张没识别出来 / ' + failed.length + ' failed:</p><ul style="font-size:13px;color:var(--ink-soft);margin:0 0 12px;padding-left:18px;line-height:1.8">';
-      for (var i = 0; i < failed.length; i++) html += '<li>' + esc(failed[i].name) + ' — ' + esc(failed[i].reason) + '</li>';
-      html += '</ul>';
-    }
-    html += '<div class="confirm-btns"><button class="btn btn-primary" id="aOk">好 OK</button></div></div>';
-    openModal(html, true);
-    $("aOk").onclick = closeModal;
-  }
-  function showCaptureLoading(current, total) {
-    var progress = total > 1 ? ' (' + current + '/' + total + ')' : '';
-    openModal('<div class="cap-load"><div class="spinner"></div><h3>正在识别菜谱…' + progress + '</h3><p>Reading recipe' + progress + ' from your screenshot…</p></div>', true);
+  function showCaptureLoading(count) {
+    var msg = count > 1 ? 'Reading recipe from ' + count + ' images…' : 'Reading recipe from your screenshot…';
+    openModal('<div class="cap-load"><div class="spinner"></div><h3>Capturing recipe…</h3><p>' + msg + '</p></div>', true);
   }
 
   // ---- link import ----
   function startLinkImport() {
     if (!getCfg().url) {
       openSettings();
-      var m = $("sTestMsg"); if (m) { m.className = "set-test bad"; m.textContent = "先填 Worker 地址再导入 / add your Worker URL first"; }
+      var m = $("sTestMsg"); if (m) { m.className = "set-test bad"; m.textContent = "Add your Worker URL first"; }
       return;
     }
-    openModal('<div class="form"><div class="form-head"><h3>链接导入 <em>Import from link</em></h3><button class="iconbtn" id="liClose" aria-label="关闭 close">' + ICON.close + '</button></div>' +
+    openModal('<div class="form"><div class="form-head"><h3>Import from link</h3><button class="iconbtn" id="liClose" aria-label="Close">' + ICON.close + '</button></div>' +
       '<div class="set-body">' +
-        '<label class="field"><span class="field-label">菜谱链接 <em>Recipe URL</em></span><input class="inp" id="li_url" placeholder="粘贴菜谱链接 / Paste recipe URL" autocomplete="off"></label>' +
+        '<label class="field"><span class="field-label">Recipe URL</span><input class="inp" id="li_url" placeholder="Paste recipe URL" autocomplete="off"></label>' +
       '</div>' +
-      '<div class="form-foot"><button class="btn btn-ghost" id="liCancel">取消 Cancel</button><button class="btn btn-primary" id="liGo">导入 Import</button></div></div>', true);
+      '<div class="form-foot"><button class="btn btn-ghost" id="liCancel">Cancel</button><button class="btn btn-primary" id="liGo">Import</button></div></div>', true);
     $("liClose").onclick = closeModal;
     $("liCancel").onclick = closeModal;
     $("liGo").onclick = function () {
@@ -788,26 +830,26 @@ body {
     setTimeout(function () { $("li_url").focus(); }, 80);
   }
   function submitLinkImport(url) {
-    openModal('<div class="cap-load"><div class="spinner"></div><h3>正在读取链接…</h3><p>Fetching and reading the recipe page…</p></div>', true);
+    openModal('<div class="cap-load"><div class="spinner"></div><h3>Fetching recipe…</h3><p>Reading the recipe page…</p></div>', true);
     var c = getCfg();
     var headers = { "Content-Type": "application/json" };
     if (c.tok) headers["X-App-Token"] = c.tok;
     fetch(c.url, { method: "POST", headers: headers, body: JSON.stringify({ url: url }) }).then(function (r) {
       return r.json().catch(function () { return { ok: false, error: "bad response" }; }).then(function (j) { return { status: r.status, body: j }; });
     }).then(function (res) {
-      if (res.status === 401) { alertModal("口令不对", "Worker 口令不匹配，到设置里检查访问口令。/ The app token didn't match — check it in settings."); return; }
+      if (res.status === 401) { alertModal("Error", "The app token didn’t match — check it in settings."); return; }
       if (!res.body || !res.body.ok) {
         var e = (res.body && res.body.error) || "unknown";
-        alertModal("没能识别", esc(e) + "<br><br>试试截图导入？/ Try importing a screenshot instead.");
+        alertModal("Error", esc(e) + " — try importing a screenshot instead.");
         return;
       }
       openForm(normalizeImported(res.body.recipe), true);
     }).catch(function () {
-      alertModal("出错了", "连不上抓取服务。检查一下网络，以及设置里的 Worker 地址。/ Couldn't reach the capture service. Check your connection and the Worker URL in settings.");
+      alertModal("Error", "Couldn’t reach the capture service. Check your connection and the Worker URL in settings.");
     });
   }
   function alertModal(title, msgHtml) {
-    openModal('<div class="confirm"><h3>' + esc(title) + '</h3><p>' + msgHtml + '</p><div class="confirm-btns"><button class="btn btn-primary" id="aOk">好 OK</button></div></div>', true);
+    openModal('<div class="confirm"><h3>' + esc(title) + '</h3><p>' + msgHtml + '</p><div class="confirm-btns"><button class="btn btn-primary" id="aOk">OK</button></div></div>', true);
     $("aOk").onclick = closeModal;
   }
   function normalizeImported(r) {
@@ -849,8 +891,8 @@ body {
   }
 
   // ---- init ----
-  $("addBtn").innerHTML = ICON.plus + " 加菜 Add";
-  $("importBtn").innerHTML = ICON.image + " 导入 Import";
+  $("addBtn").innerHTML = ICON.plus + " Add";
+  $("importBtn").innerHTML = ICON.image + " Import";
   $("captureIcon").innerHTML = ICON.image;
   $("linkIcon").innerHTML = ICON.link;
   $("settingsBtn").innerHTML = ICON.gear;
