@@ -437,8 +437,9 @@ body {
   }
   function toListItems(text) {
     if (!text) return "";
-    return text.split("\n").filter(function (l) { return l.trim(); }).map(function (l) {
-      return "<li>" + esc(l.trim().replace(/^\d+[\.\)]\s*/, "")) + "</li>";
+    var lines = Array.isArray(text) ? text : String(text).split("\n");
+    return lines.filter(function (l) { return String(l).trim(); }).map(function (l) {
+      return "<li>" + esc(String(l).trim().replace(/^\d+[\.\)]\s*/, "")) + "</li>";
     }).join("");
   }
   function listSectionHTML(title, titleEn, zh, en, type) {
@@ -756,14 +757,15 @@ body {
     r = r || {};
     var validCat = false, i;
     for (i = 0; i < CATEGORIES.length; i++) if (CATEGORIES[i].id === r.category) validCat = true;
+    function str(v) { if (Array.isArray(v)) return v.join("\n"); return v ? String(v) : ""; }
     return {
-      nameZh: r.nameZh || "", nameEn: r.nameEn || "",
+      nameZh: str(r.nameZh), nameEn: str(r.nameEn),
       category: validCat ? r.category : "dinner",
       family: [], lowFodmap: !!r.lowFodmap,
-      servings: r.servings || "", time: r.time || "",
-      ingZh: r.ingZh || "", ingEn: r.ingEn || "",
-      stepsZh: r.stepsZh || "", stepsEn: r.stepsEn || "",
-      notes: r.notes || ""
+      servings: str(r.servings), time: str(r.time),
+      ingZh: str(r.ingZh), ingEn: str(r.ingEn),
+      stepsZh: str(r.stepsZh), stepsEn: str(r.stepsEn),
+      notes: str(r.notes)
     };
   }
   function resizeImage(file, maxEdge, quality) {
