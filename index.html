@@ -179,11 +179,6 @@ body {
 .iconbtn.gear { color: var(--ink-soft); }
 .btn-capture { background: var(--surface); border-color: var(--line); color: var(--celadon-deep); }
 .btn-capture:hover { background: var(--surface-2); border-color: var(--celadon); }
-.import-wrap { position: relative; }
-.import-menu { display: none; position: absolute; top: calc(100% + 6px); right: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 24px -8px rgba(43,43,39,.25); z-index: 10; min-width: 180px; padding: 5px; }
-.import-menu.open { display: block; animation: ovin .12s ease; }
-.import-opt { display: flex; align-items: center; gap: 9px; width: 100%; background: none; border: none; font-family: var(--font-body); font-size: 14px; color: var(--ink); padding: 10px 13px; border-radius: 8px; cursor: pointer; text-align: left; }
-.import-opt:hover { background: var(--surface-2); }
 .import-banner { display: flex; align-items: center; gap: 8px; background: #EEF3E6; border: 1px solid #CFE0BE; color: #46632F; border-radius: 10px; padding: 9px 13px; font-size: 12.5px; line-height: 1.4; margin-bottom: 4px; }
 .import-banner svg { flex: none; }
 .cap-load { padding: 44px 26px; text-align: center; }
@@ -215,13 +210,8 @@ body {
     </div>
     <div class="header-actions">
       <button class="iconbtn gear" id="settingsBtn" aria-label="Settings"></button>
-      <div class="import-wrap">
-        <button class="btn btn-capture" id="importBtn"></button>
-        <div class="import-menu" id="importMenu">
-          <button class="import-opt" id="captureBtn"><span id="captureIcon"></span><span>Screenshot</span></button>
-          <button class="import-opt" id="linkBtn"><span id="linkIcon"></span><span>From link</span></button>
-        </div>
-      </div>
+      <button class="btn btn-capture" id="captureBtn"></button>
+      <button class="btn btn-capture" id="linkBtn"></button>
       <button class="btn btn-primary" id="addBtn"></button>
     </div>
   </header>
@@ -892,17 +882,14 @@ body {
 
   // ---- init ----
   $("addBtn").innerHTML = ICON.plus + " Add";
-  $("importBtn").innerHTML = ICON.image + " Import";
-  $("captureIcon").innerHTML = ICON.image;
-  $("linkIcon").innerHTML = ICON.link;
+  $("captureBtn").innerHTML = ICON.image + " Capture";
+  $("linkBtn").innerHTML = ICON.link + " Link";
   $("settingsBtn").innerHTML = ICON.gear;
   $("searchIcon").innerHTML = ICON.search;
   $("clearBtn").innerHTML = ICON.close;
   $("addBtn").onclick = function () { openForm(null); };
-  $("importBtn").onclick = function (e) { e.stopPropagation(); $("importMenu").classList.toggle("open"); };
-  $("captureBtn").onclick = function () { $("importMenu").classList.remove("open"); startCapture(); };
-  $("linkBtn").onclick = function () { $("importMenu").classList.remove("open"); startLinkImport(); };
-  document.addEventListener("click", function () { $("importMenu").classList.remove("open"); });
+  $("captureBtn").onclick = startCapture;
+  $("linkBtn").onclick = startLinkImport;
   $("settingsBtn").onclick = openSettings;
   $("capFile").onchange = function () {
     var fl = this.files;
